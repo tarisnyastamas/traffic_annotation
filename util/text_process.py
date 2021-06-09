@@ -104,7 +104,7 @@ def lookup_closest_str(input_str: str, lookup_list: list):
             closest_str = elem
     return closest_str
 
-def extract_coords_from_text(input_str: str, city_names: list, cities_dict: dict, verbose=False):
+def extract_coords_from_text(input_str: str, city_names: list, cities_dict: dict, verbose=False, get_city=False):
     """
     Returns the coordinates of the city in the text. The text should contain only one word with a capital starting letter.
 
@@ -134,7 +134,10 @@ def extract_coords_from_text(input_str: str, city_names: list, cities_dict: dict
     if verbose:
         print("Coords of {}: {}, {}".format(city_name, coord_x, coord_y))
     
-    return [coord_x, coord_y]
+    if not get_city:
+        return [coord_x, coord_y]
+    else:
+        return [coord_x, coord_y, city_name]
 
 def extract_event_from_text(input_str: str, events: list, stopwords: list, verbose: bool = False):
     """
@@ -175,7 +178,7 @@ def extract_event_from_text(input_str: str, events: list, stopwords: list, verbo
     
     return event_in_txt
 
-def extract_data_from_text(input_text: str, city_names: list, events: list, cities_dict: dict, stopwords: list, verbose: bool = False):
+def extract_data_from_text(input_text: str, city_names: list, events: list, cities_dict: dict, stopwords: list, verbose: bool = False, get_city: bool = False):
     """
     Extracts event name and coordinates from input text.\n Uses extract_coords_from_text() and extract_event_from_text() functions.
 
@@ -194,14 +197,24 @@ def extract_data_from_text(input_text: str, city_names: list, events: list, citi
             'y_coord': <coord>
         }
     """
-    coords: list = extract_coords_from_text(input_text, city_names, cities_dict)
     event: str = extract_event_from_text(input_text, events, stopwords)
-    
-    row: dict = {
+
+    if get_city:
+        coords_and_city: list = extract_coords_from_text(input_text, city_names, cities_dict, get_city=True)
+        row: dict = {
+        'city_name': coords_and_city[2],
+        'event': event,
+        'x_coord': coords_and_city[0],
+        'y_coord': coords_and_city[1]
+    }
+    else:
+        coords: list = extract_coords_from_text(input_text, city_names, cities_dict)
+        row: dict = {
         'event': event,
         'x_coord': coords[0],
         'y_coord': coords[1]
-    }
+        }
+    
     
     if verbose:
         print(row)
