@@ -15,6 +15,13 @@ def get_data(text):
         hun_stopwords,
         get_city=True
     )
+
+def process_user_input(input: str):
+    d = get_data(input)
+    d = utils.change_event_to_categ(d, events_dict)
+
+    return d
+
 ##############################
 
 ######### FILE PATHS #########
@@ -38,17 +45,22 @@ hun_stopwords = stopwords.words('hungarian')
 hun_stopwords = [tp.clean_text_accents(w,replacements) for w in hun_stopwords]
 ##############################
 
+def main():
+    ######### PROCESSING #########
+    test_text = 'piszolyosok a Kolozsvaron az opera mellett'
 
-######### PROCESSING #########
-test_text = 'piszolyosok a Kolozsvaron az opera mellett'
+    # Extract data from text
+    d = get_data(test_text)
+    d = utils.change_event_to_categ(d, events_dict)
 
-# Extract data from text
-d = get_data(test_text)
-d = utils.change_event_to_categ(d, events_dict)
+    print("Processed", process_user_input(test_text))
 
-# Put extracted data into dataframe
-df = pd.DataFrame(columns=['city_name', 'event', 'x_coord', 'y_coord'])
-df = df.append(d, ignore_index=True)
-##############################
+    # Put extracted data into dataframe
+    df = pd.DataFrame(columns=['city_name', 'event', 'x_coord', 'y_coord'])
+    df = df.append(d, ignore_index=True)
+    ##############################
 
-print(df)
+    print(df)
+
+if __name__ == '__main__':
+    main()
