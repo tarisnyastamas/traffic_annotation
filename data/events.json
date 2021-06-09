@@ -1,0 +1,19 @@
+{
+    "traffic_jam": [
+        "dugo",
+        "torlodas"
+    ],
+    "accident": [
+        "baleset"
+    ],
+    "radar": [
+        "radar",
+        "rendor",
+        "pisztolyos"
+    ],
+    "bear": [
+        "maci",
+        "medve",
+        "macko" 
+    ]
+}
