@@ -18,8 +18,8 @@ def get_data(text):
 replacements_file_path = 'data/replacements.json'
 replacements = utils.load_json(replacements_file_path)
 
-events_file_path = 'data/events.txt'
-events = utils.read_file_lines(events_file_path)
+events_path = 'data/events.json'
+events = utils.load_events_from_json(events_path)
 
 # load JSON with cities
 coords_file = 'data/cities_hu_coords.json'
