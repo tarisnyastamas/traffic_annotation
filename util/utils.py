@@ -31,6 +31,22 @@ def read_file_lines(path:str):
     
     return lines
 
+def change_event_to_categ(d: dict, events_dict: dict):
+    """
+    Changes the raw event name to the category of this event
+    """
+    event_raw:str = d['event']
+
+    event_categ: str = ''
+    for key, value in events_dict.items():
+        if event_raw in value:
+            event_categ = key
+            break
+
+    d['event'] = event_categ
+
+    return d
+
 def main():
     pass
 
