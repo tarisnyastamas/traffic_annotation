@@ -1,6 +1,6 @@
 from nltk.corpus.reader.chasen import test
 import pandas as pd
-from nltk.corpus import stopwords
+from nltk.corpus import stopwords, util
 
 import util.text_process as tp
 import util.utils as utils
@@ -14,7 +14,6 @@ def get_data(text):
         hun_stopwords
     )
 
-# get hungarian stopwords and clean accents from them
 # TODO: read replacements from external file
 replacements = {
     "Á": "A",
@@ -36,23 +35,20 @@ replacements = {
     "Í": "I"
 }
 
-# TODO: read events from external file
-events = [
-    'baleset',
-    'dugo',
-    'torlodas',
-    'medve',
-    'maci',
-    'radar',
-    'rendor',
-    'pisztolyos'
-]
+replacements_file_path = 'data/replacements.json'
+replacements = utils.load_json(replacements_file_path)
+print(replacements)
 
+events_file_path = 'data/events.txt'
+events = utils.read_file_lines(events_file_path)
+print('Events: ', events)
+
+# get hungarian stopwords and clean accents from them
 hun_stopwords = stopwords.words('hungarian')
 hun_stopwords = [tp.clean_text_accents(w,replacements) for w in hun_stopwords]
 
 # load JSON with cities
-coords_file = 'cities_hu_coords.json'
+coords_file = 'data/cities_hu_coords.json'
 cities_dict = utils.load_json(coords_file)
 
 city_names = tp.build_city_list_from_dict(cities_dict)
@@ -75,7 +71,7 @@ data_row = tp.extract_data_from_text(
 
 d = get_data(test_text)
 
-df = pd.DataFrame(columns=['event', 'x_coord', 'y_coord'])
+df = pd.DataFrame(columns=['city_name', 'event', 'x_coord', 'y_coord'])
 df = df.append(d, ignore_index=True)
 
 print(df)
