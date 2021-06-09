@@ -22,6 +22,15 @@ def process_user_input(input: str):
 
     return d
 
+def put_row_into_csv(csv_path: str, row: dict):
+    last_idx = utils.get_last_idx_in_csv(csv_path)
+
+    csv_file = open(csv_path, 'a')
+    append_str = '\n' + str(last_idx+1) + ',' + row['city_name'] + "," + row['event'] + "," + str(row['x_coord']) + "," + str(row['y_coord'])
+    csv_file.write(append_str)
+
+    return append_str
+
 ##############################
 
 ######### FILE PATHS #########
@@ -63,4 +72,12 @@ def main():
     print(df)
 
 if __name__ == '__main__':
-    main()
+    # main()
+
+    csv_path = 'static/event_coords_data.csv'
+    test_text = 'piszolyosok a Kolozsvaron az opera mellett'
+    d = d = get_data(test_text)
+    d = utils.change_event_to_categ(d, events_dict)
+
+
+    put_row_into_csv(csv_path, d)

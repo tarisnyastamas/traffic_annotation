@@ -47,6 +47,14 @@ def change_event_to_categ(d: dict, events_dict: dict):
 
     return d
 
+def get_last_idx_in_csv(path):
+    with open(path, "r") as f:
+        last_line = f.readlines()[-1]
+
+    last_idx = int(last_line.split(',')[0])
+
+    return last_idx
+
 def main():
     pass
 
